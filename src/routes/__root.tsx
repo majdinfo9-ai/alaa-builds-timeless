@@ -108,7 +108,7 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const pathname = useRouterStatePathname();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   useEffect(() => {
     if (typeof window === "undefined") return;
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -124,10 +124,4 @@ function RootComponent() {
       <Footer />
     </QueryClientProvider>
   );
-}
-
-function useRouterStatePathname() {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { useRouterState } = require("@tanstack/react-router") as typeof import("@tanstack/react-router");
-  return useRouterState({ select: (s) => s.location.pathname });
 }
