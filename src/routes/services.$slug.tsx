@@ -150,18 +150,37 @@ function ServicePage() {
             </Reveal>
           </div>
 
-          <div className="mt-12 columns-1 gap-4 sm:columns-2 md:columns-3 md:gap-5 lg:columns-4">
-            {gal.slice(0, 18).map((src: string, i: number) => (
-              <Reveal key={i} kind="up" delay={(i % 4) * 0.05}>
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.8, ease: [0.2,0.8,0.2,1] }}
-                  className="mb-4 break-inside-avoid overflow-hidden bg-muted shadow-soft md:mb-5"
-                >
-                  <img src={src} alt="" loading="lazy" className="w-full object-cover" />
-                </motion.div>
-              </Reveal>
-            ))}
+          <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-6 md:gap-5">
+            {gal.slice(0, 18).map((src: string, i: number) => {
+              // editorial rhythm: pattern of spans + aspect ratios per 6-col row
+              const pattern = [
+                { col: "md:col-span-3", ratio: "aspect-[4/5]" },
+                { col: "md:col-span-3", ratio: "aspect-[4/5]" },
+                { col: "md:col-span-2", ratio: "aspect-square" },
+                { col: "md:col-span-2", ratio: "aspect-square" },
+                { col: "md:col-span-2", ratio: "aspect-square" },
+                { col: "md:col-span-4", ratio: "aspect-[16/10]" },
+                { col: "md:col-span-2", ratio: "aspect-[4/5]" },
+              ];
+              const p = pattern[i % pattern.length];
+              return (
+                <Reveal key={i} kind="up" delay={(i % 4) * 0.05}>
+                  <motion.div
+                    whileHover={{ scale: 1.015 }}
+                    transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+                    className={`group relative overflow-hidden bg-muted shadow-soft ${p.col} ${p.ratio}`}
+                  >
+                    <img
+                      src={src}
+                      alt=""
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.06]"
+                    />
+                    <span aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  </motion.div>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
