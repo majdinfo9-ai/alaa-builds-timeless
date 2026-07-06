@@ -17,6 +17,13 @@ export function ScrollIndicator() {
   const [active, setActive] = useState(0);
   const enabled = pathname === "/";
 
+  // Reset progress + active whenever we navigate — avoids stale state
+  // when returning from a service page to the home page.
+  useEffect(() => {
+    setProgress(0);
+    setActive(0);
+  }, [pathname]);
+
   useEffect(() => {
     if (!enabled) return;
     const onScroll = () => {
@@ -24,10 +31,14 @@ export function ScrollIndicator() {
       const max = h.scrollHeight - h.clientHeight;
       setProgress(max > 0 ? window.scrollY / max : 0);
     };
-    onScroll();
+    // Delay one frame so layout is measured after navigation
+    const raf = requestAnimationFrame(onScroll);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [enabled]);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [enabled, pathname]);
 
   useEffect(() => {
     if (!enabled) return;
