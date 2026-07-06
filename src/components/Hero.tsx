@@ -75,7 +75,7 @@ export function Hero() {
       {/* content */}
       <motion.div
         style={reduce ? undefined : { y: contentY, opacity: contentOp }}
-        className="container-x relative z-10 mx-auto flex min-h-screen max-w-[1440px] flex-col justify-between pt-36 pb-16 text-white"
+        className="container-x relative z-10 mx-auto flex min-h-screen max-w-[1440px] flex-col justify-between pt-44 pb-16 md:pt-52 text-white"
       >
         <div className="flex items-center gap-4">
           <motion.span
