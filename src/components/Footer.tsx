@@ -1,4 +1,31 @@
+// ============================================================
+// CONTACT DETAILS — edit here to update site-wide contact info.
+// ============================================================
+const CONTACT = {
+  // Phones (WhatsApp available on both). Replace freely.
+  phonePrimary: "+966 50 525 9544",
+  phoneSecondary: "+966 55 469 3331",
+  // Address
+  addressLine1: "الرياض — حي عكاظ — شارع دمنهور",
+  addressLine2: "المملكة العربية السعودية",
+  cr: "101078928", // السجل التجاري
+  postalCode: "14723",
+  // Social — replace # with real URLs when ready
+  instagram: "#",
+  linkedin: "#",
+  x: "#",
+  // Optional email (kept internal reference; not shown in footer per spec)
+  email: "info@alaa-bg.com",
+};
+
+function digitsOnly(v: string) {
+  return v.replace(/[^\d+]/g, "");
+}
+
 export function Footer() {
+  const waPrimary = `https://wa.me/${digitsOnly(CONTACT.phonePrimary).replace(/^\+/, "")}`;
+  const waSecondary = `https://wa.me/${digitsOnly(CONTACT.phoneSecondary).replace(/^\+/, "")}`;
+
   return (
     <footer id="contact" className="border-t border-hairline bg-background">
       <div className="container-x mx-auto max-w-[1440px] py-20">
@@ -12,27 +39,69 @@ export function Footer() {
               فريقنا جاهز لدراسة مشروعك واقتراح الحلول الأنسب هندسياً وتنفيذياً.
             </p>
           </div>
-          <div className="md:col-span-3">
+
+          {/* Contact */}
+          <div className="md:col-span-4">
             <p className="text-[0.7rem] tracking-[0.3em] text-muted-foreground">تواصل</p>
             <ul className="mt-6 space-y-3 text-[0.95rem] text-ink">
-              <li><a href="tel:+966500000000" className="gold-line">‎+966 50 000 0000</a></li>
-              <li><a href="mailto:info@alaa-bg.com" className="gold-line">info@alaa-bg.com</a></li>
-              <li className="text-ink-soft">الرياض · المملكة العربية السعودية</li>
+              <li className="flex flex-wrap items-center gap-3">
+                <a href={`tel:${digitsOnly(CONTACT.phonePrimary)}`} className="gold-line" dir="ltr">
+                  {CONTACT.phonePrimary}
+                </a>
+                <a
+                  href={waPrimary}
+                  target="_blank"
+                  rel="noopener"
+                  className="text-[0.7rem] tracking-[0.25em] text-accent"
+                >
+                  واتساب
+                </a>
+              </li>
+              <li className="flex flex-wrap items-center gap-3">
+                <a href={`tel:${digitsOnly(CONTACT.phoneSecondary)}`} className="gold-line" dir="ltr">
+                  {CONTACT.phoneSecondary}
+                </a>
+                <a
+                  href={waSecondary}
+                  target="_blank"
+                  rel="noopener"
+                  className="text-[0.7rem] tracking-[0.25em] text-accent"
+                >
+                  واتساب
+                </a>
+              </li>
             </ul>
+
+            <p className="mt-8 text-[0.7rem] tracking-[0.3em] text-muted-foreground">العنوان</p>
+            <address className="mt-4 not-italic text-[0.95rem] leading-8 text-ink">
+              {CONTACT.addressLine1}
+              <br />
+              <span className="text-ink-soft">
+                س.ت: <span dir="ltr">{CONTACT.cr}</span> · الرمز البريدي:{" "}
+                <span dir="ltr">{CONTACT.postalCode}</span>
+              </span>
+            </address>
           </div>
-          <div className="md:col-span-2">
+
+          {/* Social */}
+          <div className="md:col-span-3">
             <p className="text-[0.7rem] tracking-[0.3em] text-muted-foreground">تابعنا</p>
             <ul className="mt-6 space-y-3 text-[0.95rem] text-ink">
-              <li><a href="#" className="gold-line">إنستجرام</a></li>
-              <li><a href="#" className="gold-line">لينكدإن</a></li>
-              <li><a href="#" className="gold-line">إكس</a></li>
-            </ul>
-          </div>
-          <div className="md:col-span-2">
-            <p className="text-[0.7rem] tracking-[0.3em] text-muted-foreground">ساعات العمل</p>
-            <ul className="mt-6 space-y-3 text-[0.95rem] text-ink">
-              <li>الأحد — الخميس</li>
-              <li className="text-ink-soft">٩:٠٠ ص — ٦:٠٠ م</li>
+              <li>
+                <a href={CONTACT.instagram} target="_blank" rel="noopener" className="gold-line">
+                  إنستجرام
+                </a>
+              </li>
+              <li>
+                <a href={CONTACT.linkedin} target="_blank" rel="noopener" className="gold-line">
+                  لينكدإن
+                </a>
+              </li>
+              <li>
+                <a href={CONTACT.x} target="_blank" rel="noopener" className="gold-line">
+                  إكس
+                </a>
+              </li>
             </ul>
           </div>
         </div>
