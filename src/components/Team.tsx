@@ -11,7 +11,7 @@ const team = [
 
 export function Team() {
   return (
-    <section className="relative border-t border-hairline bg-surface py-28 md:py-40">
+    <section id="team" className="relative border-t border-hairline bg-surface py-28 md:py-40">
       <div className="container-x mx-auto max-w-[1440px]">
         <div className="grid gap-14 md:grid-cols-12">
           <div className="md:col-span-4">
