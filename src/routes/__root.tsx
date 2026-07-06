@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ScrollIndicator } from "@/components/ScrollIndicator";
 
 function NotFoundComponent() {
   return (
