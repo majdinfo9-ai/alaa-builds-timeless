@@ -22,8 +22,8 @@ export function About() {
     const r = cardRef.current.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
-    ry.set(px * 6);
-    rx.set(-py * 6);
+    ry.set(px * 9);
+    rx.set(-py * 9);
   }
   function resetTilt() { rx.set(0); ry.set(0); }
 
