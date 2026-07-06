@@ -16,7 +16,7 @@ const materials = [
 export function Values() {
   const [active, setActive] = useState<number | null>(null);
   return (
-    <section className="relative border-t border-hairline bg-surface py-28 md:py-40">
+    <section id="values" className="relative border-t border-hairline bg-surface py-28 md:py-40">
       <div className="container-x mx-auto max-w-[1440px]">
         <div className="flex flex-col items-start justify-between gap-10 md:flex-row md:items-end">
           <div>

@@ -22,8 +22,8 @@ export function About() {
     const r = cardRef.current.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
-    ry.set(px * 6);
-    rx.set(-py * 6);
+    ry.set(px * 9);
+    rx.set(-py * 9);
   }
   function resetTilt() { rx.set(0); ry.set(0); }
 
@@ -96,13 +96,7 @@ export function About() {
                 style={reduce ? undefined : { scale: imgScale }}
                 className="h-full w-full object-cover"
               />
-              <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 40%, rgba(23,23,23,0.35) 100%)" }} />
-              <div className="absolute bottom-0 right-0 flex items-end justify-between p-6 md:p-8">
-                <div className="text-white">
-                  <p className="text-[0.62rem] tracking-[0.35em] opacity-80">ALAA HQ</p>
-                  <p className="mt-1 text-lg font-semibold">مقر آلاء البناء</p>
-                </div>
-              </div>
+              <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 55%, rgba(23,23,23,0.28) 100%)" }} />
               <div aria-hidden className="absolute inset-4 border border-white/20" />
             </motion.div>
             <div aria-hidden className="absolute -bottom-6 -left-6 hidden h-24 w-24 border border-accent md:block" />
