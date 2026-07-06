@@ -9,7 +9,7 @@ export const services = [
     title: "مقاولات عامة",
     en: "GENERAL CONSTRUCTION",
     short: "تنفيذ مشاريع سكنية وتجارية وحكومية من الأساسات حتى التسليم النهائي.",
-    cover: constructionImages[0],
+    cover: constructionImages[6],
     gallery: constructionImages.slice(0, 14),
   },
   {
@@ -25,7 +25,7 @@ export const services = [
     title: "الخشبيات والديكور",
     en: "WOODWORKS & INTERIORS",
     short: "خزائن، تشطيبات، ووحدات خشبية مصنّعة بحرفية عالية وتصميم مدروس.",
-    cover: woodImages[6],
+    cover: woodImages[16],
     gallery: woodImages,
   },
 ] as const;
