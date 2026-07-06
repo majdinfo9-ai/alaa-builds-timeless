@@ -11,22 +11,23 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { SmoothScroll } from "@/components/SmoothScroll";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
+        <p className="text-[0.7rem] tracking-[0.4em] text-accent">404</p>
+        <h1 className="mt-4 text-3xl font-bold text-ink">الصفحة غير موجودة</h1>
+        <p className="mt-3 text-sm text-ink-soft">الصفحة التي تبحث عنها لم تعد متاحة.</p>
+        <div className="mt-8">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center gap-2 border border-hairline px-6 py-3 text-sm font-semibold text-ink transition-colors hover:border-ink"
           >
-            Go home
+            العودة إلى الرئيسية
           </Link>
         </div>
       </div>
@@ -44,27 +45,17 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <h1 className="text-xl font-bold text-ink">تعذّر تحميل الصفحة</h1>
+        <p className="mt-2 text-sm text-ink-soft">حدث خطأ غير متوقع. يمكنك المحاولة مجدداً.</p>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            onClick={() => { router.invalidate(); reset(); }}
+            className="border border-ink bg-ink px-5 py-3 text-sm font-semibold text-background"
           >
-            Try again
+            حاول مرة أخرى
           </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
+          <a href="/" className="border border-hairline px-5 py-3 text-sm font-semibold text-ink">
+            الرئيسية
           </a>
         </div>
       </div>
@@ -77,21 +68,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "شركة آلاء البناء — مقاولات · هندسة · تصميم" },
+      { name: "description", content: "شركة آلاء البناء: خمسة عشر عاماً من تنفيذ مشاريع البناء الفاخرة في المملكة العربية السعودية — مقاولات عامة، أعمال خرسانية، وخشبيات وديكور." },
+      { name: "author", content: "Alaa Al-Binaa" },
+      { property: "og:title", content: "شركة آلاء البناء — نبني المستقبل بأيادٍ خبيرة" },
+      { property: "og:description", content: "مقاولات عامة · هندسة · تصميم. أكثر من 1000 مشروع منفَّذ منذ 2010." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -102,7 +92,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ar" dir="rtl">
       <head>
         <HeadContent />
       </head>
@@ -116,11 +106,14 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <SmoothScroll />
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
     </QueryClientProvider>
   );
 }
