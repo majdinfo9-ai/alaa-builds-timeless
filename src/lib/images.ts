@@ -9,6 +9,10 @@ const woodMods = import.meta.glob<Asset>("../assets/wood/*.asset.json", {
   eager: true,
   import: "default",
 });
+const constructionMods = import.meta.glob<Asset>("../assets/construction/*.asset.json", {
+  eager: true,
+  import: "default",
+});
 
 function sortByKey(mods: Record<string, Asset>): string[] {
   return Object.entries(mods)
@@ -22,9 +26,7 @@ function sortByKey(mods: Record<string, Asset>): string[] {
 
 export const concreteImages: string[] = sortByKey(concreteMods);
 export const woodImages: string[] = sortByKey(woodMods);
-
-// Construction service reuses concrete site photos (rebar / slabs / structural).
-export const constructionImages: string[] = concreteImages;
+export const constructionImages: string[] = sortByKey(constructionMods);
 
 export function pickSpread(arr: string[], count: number): string[] {
   if (arr.length === 0) return [];

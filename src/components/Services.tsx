@@ -9,8 +9,8 @@ export const services = [
     title: "مقاولات عامة",
     en: "GENERAL CONSTRUCTION",
     short: "تنفيذ مشاريع سكنية وتجارية وحكومية من الأساسات حتى التسليم النهائي.",
-    cover: constructionImages[6],
-    gallery: constructionImages.slice(0, 14),
+    cover: constructionImages[2] ?? constructionImages[0],
+    gallery: constructionImages.slice(0, 24),
   },
   {
     slug: "concrete",

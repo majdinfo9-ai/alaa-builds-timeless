@@ -38,9 +38,6 @@ export function CTA() {
             <Reveal kind="up" delay={0.3}>
               <MagneticButtonDark />
             </Reveal>
-            <Reveal kind="up" delay={0.4}>
-              <p className="text-[0.75rem] tracking-[0.3em] text-white/50">‎+966 50 000 0000</p>
-            </Reveal>
           </div>
         </div>
       </div>
