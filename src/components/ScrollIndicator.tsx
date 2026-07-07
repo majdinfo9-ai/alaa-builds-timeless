@@ -40,27 +40,34 @@ export function ScrollIndicator() {
     };
   }, [enabled, pathname]);
 
+  // Active-section detection, computed directly from each section's position
+  // on every scroll tick. Unlike IntersectionObserver, this can never get
+  // "stuck" after a route change — there's no reliance on intersection state
+  // transitions firing correctly right after the DOM re-mounts.
   useEffect(() => {
     if (!enabled) return;
-    const els = sections
-      .map((s) => document.getElementById(s.id))
-      .filter((el): el is HTMLElement => !!el);
-    if (!els.length) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        // pick topmost intersecting
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) {
-          const idx = sections.findIndex((s) => s.id === (visible[0].target as HTMLElement).id);
-          if (idx >= 0) setActive(idx);
-        }
-      },
-      { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+
+    const els = sections.map((s) => document.getElementById(s.id));
+
+    const onScroll = () => {
+      const line = window.innerHeight * 0.45;
+      let current = 0;
+      els.forEach((el, i) => {
+        if (!el) return;
+        if (el.getBoundingClientRect().top <= line) current = i;
+      });
+      setActive(current);
+    };
+
+    // Run once on mount/navigation (after layout settles), then on every scroll/resize
+    const raf = requestAnimationFrame(onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [enabled, pathname]);
 
   const dots = useMemo(() => sections, []);

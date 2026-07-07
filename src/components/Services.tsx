@@ -1,7 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Reveal } from "./Reveal";
-import { concreteImages, woodImages, constructionImages } from "@/lib/images";
+import {
+  constructionImages,
+  concreteImages,
+  woodImages,
+  constructionHero,
+  concreteHero,
+  woodHero,
+} from "@/lib/images";
 
 export const services = [
   {
@@ -9,7 +16,7 @@ export const services = [
     title: "مقاولات عامة",
     en: "GENERAL CONSTRUCTION",
     short: "تنفيذ مشاريع سكنية وتجارية وحكومية من الأساسات حتى التسليم النهائي.",
-    cover: constructionImages[2] ?? constructionImages[0],
+    cover: constructionHero,
     gallery: constructionImages.slice(0, 24),
   },
   {
@@ -17,7 +24,7 @@ export const services = [
     title: "أعمال الخرسانة",
     en: "CONCRETE WORKS",
     short: "تسليح، صبّ، ومعالجة خرسانية بمواصفات هندسية دقيقة لكل عنصر إنشائي.",
-    cover: concreteImages[3],
+    cover: concreteHero,
     gallery: concreteImages,
   },
   {
@@ -25,7 +32,7 @@ export const services = [
     title: "الخشبيات والديكور",
     en: "WOODWORKS & INTERIORS",
     short: "خزائن، تشطيبات، ووحدات خشبية مصنّعة بحرفية عالية وتصميم مدروس.",
-    cover: woodImages[16],
+    cover: woodHero,
     gallery: woodImages,
   },
 ] as const;
@@ -56,6 +63,7 @@ export function Services() {
               <Link
                 to="/services/$slug"
                 params={{ slug: s.slug }}
+                resetScroll
                 className="group relative flex h-full flex-col overflow-hidden border border-hairline bg-card shadow-soft transition-all duration-700 hover:-translate-y-1 hover:shadow-lift"
               >
                 <div className="relative aspect-[4/5] overflow-hidden bg-muted">

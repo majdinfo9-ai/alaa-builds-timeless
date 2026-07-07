@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, useReducedMotion, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Reveal } from "./Reveal";
 import { concreteImages, woodImages, constructionImages } from "@/lib/images";
 
@@ -14,30 +14,60 @@ function pick(arr: string[], i: number) {
 }
 
 const projects: P[] = [
-  { img: pick(woodImages, 10),        ratio: "aspect-[3/4]" },
-  { img: pick(constructionImages, 3), ratio: "aspect-[4/5]" },
+  { img: pick(woodImages, 68),        ratio: "aspect-[3/4]" },
+  { img: pick(woodImages, 64), ratio: "aspect-[4/5]" },
   { img: pick(woodImages, 24),        ratio: "aspect-[4/5]" },
-  { img: pick(concreteImages, 4),     ratio: "aspect-[3/4]" },
-  { img: pick(woodImages, 40),        ratio: "aspect-[4/5]" },
-  { img: pick(woodImages, 55),        ratio: "aspect-[3/4]" },
-  { img: pick(constructionImages, 14),ratio: "aspect-[4/5]" },
-  { img: pick(concreteImages, 12),    ratio: "aspect-[3/4]" },
-  { img: pick(woodImages, 70),        ratio: "aspect-[4/5]" },
-  { img: pick(woodImages, 85),        ratio: "aspect-[3/4]" },
+  { img: pick(concreteImages, 12),     ratio: "aspect-[3/4]" },
+  { img: pick(constructionImages, 0),        ratio: "aspect-[4/5]" },
+  { img: pick(constructionImages, 12),        ratio: "aspect-[3/4]" },
+  { img: pick(woodImages, 78),ratio: "aspect-[4/5]" },
+  { img: pick(woodImages, 30),    ratio: "aspect-[3/4]" },
+  { img: pick(concreteImages, 12),        ratio: "aspect-[4/5]" },
+  { img: pick(woodImages, 40),        ratio: "aspect-[3/4]" },
 ];
 
 export function Projects() {
   const wrapRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  const [maxTranslate, setMaxTranslate] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: wrapRef,
     offset: ["start start", "end end"],
   });
 
-  // Fraction of the horizontal track that must travel past the viewport.
-  // 88% covers the track width (~200vw) minus the visible pane.
-  const xRaw = useTransform(scrollYProgress, [0, 1], ["0%", "-62%"]);
+  // Measure the real track width vs. the sticky viewport's own width (not
+  // window.innerWidth, which can drift from the actual content area) so the
+  // last image lands flush at the edge instead of overshooting into blank space.
+  useEffect(() => {
+    if (reduce) return;
+    const track = trackRef.current;
+    const sticky = stickyRef.current;
+    if (!track || !sticky) return;
+
+    const measure = () => {
+      const trackWidth = track.scrollWidth;
+      const viewportWidth = sticky.clientWidth;
+      setMaxTranslate(Math.max(0, trackWidth - viewportWidth));
+    };
+
+    const raf = requestAnimationFrame(measure);
+    window.addEventListener("load", measure);
+    const ro = new ResizeObserver(measure);
+    ro.observe(track);
+    ro.observe(sticky);
+    window.addEventListener("resize", measure);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("load", measure);
+      window.removeEventListener("resize", measure);
+      ro.disconnect();
+    };
+  }, [reduce]);
+
+  const xRaw = useTransform(scrollYProgress, [0, 1], [0, -maxTranslate]);
   const x = useSpring(xRaw, { stiffness: 90, damping: 24, mass: 0.4 });
 
   // Outer height controls how long the pin lasts. ~300vh feels cinematic.
@@ -75,10 +105,16 @@ export function Projects() {
         </div>
       ) : (
         <div ref={wrapRef} className={`relative ${outerHeight}`}>
-          <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-            {/* Direction is LTR here so translating negatively moves rightward images off to the left,
-                which visually reads as "sliding from right to left" for our RTL viewer. */}
+          {/* dir="ltr" here (not just on the track) matters: the page is RTL,
+              so a flex container's "start" edge is its right side. Without
+              forcing this wrapper to LTR too, the track would render with its
+              right edge (holding the LAST images) already flush against the
+              screen before any scroll transform is applied — which is why
+              only the last few images were visible and scrolling revealed
+              nothing further. */}
+          <div ref={stickyRef} dir="ltr" className="sticky top-0 flex h-screen items-center overflow-hidden">
             <motion.div
+              ref={trackRef}
               dir="ltr"
               style={{ x }}
               className="flex items-center gap-8 pl-[8vw] pr-[8vw] md:gap-12"

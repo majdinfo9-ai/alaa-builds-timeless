@@ -15,14 +15,6 @@ export function Trust() {
             نتعامل مع كل عميل باعتباره شريكاً طويل الأمد. كل مشروع نُنجزه هو تعهّد مكتوب بين ما وعدنا به وما سلّمناه فعلاً.
           </p>
         </Reveal>
-        <Reveal kind="up" delay={0.4}>
-          <div className="mx-auto mt-14 flex flex-wrap items-center justify-center gap-x-14 gap-y-6 text-[0.72rem] tracking-[0.35em] text-muted-foreground">
-            <span>ISO · 9001</span>
-            <span>SCE · مسجّلة</span>
-            <span>سلامة · OSHA</span>
-            <span>تصنيف · مقاولين</span>
-          </div>
-        </Reveal>
       </div>
     </section>
   );

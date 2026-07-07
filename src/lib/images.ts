@@ -1,37 +1,30 @@
-// Collect all uploaded asset pointers via Vite glob import.
-type Asset = { url: string; asset_id: string };
+// Construction (.JPG)
+export const constructionHero = "/images/construction/hero.JPG";
+export const constructionImages = Array.from(
+  { length: 127 },
+  (_, i) => `/images/construction/${i + 1}.JPG`
+);
 
-const concreteMods = import.meta.glob<Asset>("../assets/concrete/*.asset.json", {
-  eager: true,
-  import: "default",
-});
-const woodMods = import.meta.glob<Asset>("../assets/wood/*.asset.json", {
-  eager: true,
-  import: "default",
-});
-const constructionMods = import.meta.glob<Asset>("../assets/construction/*.asset.json", {
-  eager: true,
-  import: "default",
-});
+// Concrete (.jpg)
+export const concreteHero = "/images/concrete/hero.jpg";
+export const concreteImages = Array.from(
+  { length: 24 },
+  (_, i) => `/images/concrete/${i + 1}.jpg`
+);
 
-function sortByKey(mods: Record<string, Asset>): string[] {
-  return Object.entries(mods)
-    .sort(([a], [b]) => {
-      const na = parseInt(a.match(/(\d+)\.asset\.json$/)?.[1] ?? "0", 10);
-      const nb = parseInt(b.match(/(\d+)\.asset\.json$/)?.[1] ?? "0", 10);
-      return na - nb;
-    })
-    .map(([, v]) => v.url);
-}
+// Wood (.jpg)
+export const woodHero = "/images/wood/hero.jpg";
+export const woodImages = Array.from(
+  { length: 125 },
+  (_, i) => `/images/wood/${i + 1}.jpg`
+);
 
-export const concreteImages: string[] = sortByKey(concreteMods);
-export const woodImages: string[] = sortByKey(woodMods);
-export const constructionImages: string[] = sortByKey(constructionMods);
+export function pickSpread(arr: string[], count: number) {
+  if (arr.length <= count) return arr;
 
-export function pickSpread(arr: string[], count: number): string[] {
-  if (arr.length === 0) return [];
-  const step = Math.max(1, Math.floor(arr.length / count));
-  const out: string[] = [];
-  for (let i = 0; i < count; i++) out.push(arr[(i * step) % arr.length]);
-  return out;
+  const step = (arr.length - 1) / (count - 1);
+
+  return Array.from({ length: count }, (_, i) => {
+    return arr[Math.round(i * step)];
+  });
 }

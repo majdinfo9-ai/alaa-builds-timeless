@@ -1,6 +1,6 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { services } from "@/components/Services";
 import { Reveal, SplitLines } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
@@ -44,6 +44,8 @@ function ServicePage() {
 
   const gal = service.gallery;
   const overview = gal[Math.floor(gal.length / 2)];
+  const GALLERY_STEP = 12;
+  const [galleryCount, setGalleryCount] = useState(GALLERY_STEP);
   const process = [
     { k: "01", t: "دراسة", d: "نستمع، نزور الموقع، ونحلّل المتطلبات قبل أي خطوة." },
     { k: "02", t: "تصميم", d: "نقترح حلولاً هندسية ومعمارية مدعومة بجداول واضحة." },
@@ -150,38 +152,37 @@ function ServicePage() {
             </Reveal>
           </div>
 
-          <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-6 md:gap-5">
-            {gal.slice(0, 18).map((src: string, i: number) => {
-              // editorial rhythm: pattern of spans + aspect ratios per 6-col row
-              const pattern = [
-                { col: "md:col-span-3", ratio: "aspect-[4/5]" },
-                { col: "md:col-span-3", ratio: "aspect-[4/5]" },
-                { col: "md:col-span-2", ratio: "aspect-square" },
-                { col: "md:col-span-2", ratio: "aspect-square" },
-                { col: "md:col-span-2", ratio: "aspect-square" },
-                { col: "md:col-span-4", ratio: "aspect-[16/10]" },
-                { col: "md:col-span-2", ratio: "aspect-[4/5]" },
-              ];
-              const p = pattern[i % pattern.length];
-              return (
-                <Reveal key={i} kind="up" delay={(i % 4) * 0.05}>
-                  <motion.div
-                    whileHover={{ scale: 1.015 }}
-                    transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
-                    className={`group relative overflow-hidden bg-muted shadow-soft ${p.col} ${p.ratio}`}
-                  >
-                    <img
-                      src={src}
-                      alt=""
-                      loading="lazy"
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.06]"
-                    />
-                    <span aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                  </motion.div>
-                </Reveal>
-              );
-            })}
+          <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 md:gap-5">
+            {gal.slice(0, galleryCount).map((src: string, i: number) => (
+              <Reveal key={src + i} kind="up" delay={(i % 4) * 0.05}>
+                <motion.div
+                  whileHover={{ scale: 1.015 }}
+                  transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+                  className="group relative aspect-[4/5] overflow-hidden bg-muted shadow-soft"
+                >
+                  <img
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.06]"
+                  />
+                  <span aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                </motion.div>
+              </Reveal>
+            ))}
           </div>
+
+          {galleryCount < gal.length && (
+            <div className="mt-12 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setGalleryCount((c) => Math.min(c + GALLERY_STEP, gal.length))}
+                className="border border-hairline px-8 py-4 text-[0.82rem] font-semibold tracking-[0.25em] text-ink transition-colors duration-500 hover:border-ink hover:bg-ink hover:text-background"
+              >
+                إظهار المزيد
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
