@@ -8,8 +8,7 @@ const CONTACT = {
   phoneRaw2: "966505259544",
   email: "M.satilah@hotmail.com",
   addressLine1: "الرياض — المملكة العربية السعودية",
-  // Replace the src below with the real Google Maps embed URL when available.
-  mapEmbed: "",
+  mapUrl: "https://maps.app.goo.gl/qM6dk8rG2ouVMT8w8?g_st=iw",
   instagram: "#",
   linkedin: "#",
   x: "#",
@@ -93,6 +92,14 @@ export function Footer() {
             <address className="mt-4 not-italic text-[0.95rem] leading-8 text-ink">
               {CONTACT.addressLine1}
             </address>
+            <a
+              href={CONTACT.mapUrl}
+              target="_blank"
+              rel="noopener"
+              className="mt-3 inline-flex text-[0.78rem] font-semibold tracking-[0.16em] text-accent transition-colors hover:text-ink"
+            >
+              الموقع على خرائط Google
+            </a>
           </div>
 
           {/* Social */}
@@ -118,26 +125,21 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Google Maps placeholder — replace src with real embed URL later */}
         <div className="mt-16">
           <p className="text-[0.7rem] tracking-[0.3em] text-muted-foreground">الموقع على الخريطة</p>
           <div className="relative mt-4 aspect-[16/6] w-full overflow-hidden border border-hairline bg-muted">
-            {CONTACT.mapEmbed ? (
-              <iframe
-                src={CONTACT.mapEmbed}
-                title="Google Maps"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="absolute inset-0 h-full w-full"
-              />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-[0.7rem] tracking-[0.35em] text-accent">GOOGLE MAPS</p>
-                  <p className="mt-3 text-sm text-ink-soft">سيتم إضافة الموقع قريباً</p>
-                </div>
+            <a
+              href={CONTACT.mapUrl}
+              target="_blank"
+              rel="noopener"
+              className="absolute inset-0 flex items-center justify-center transition-colors hover:bg-accent/10"
+              aria-label="فتح الموقع على خرائط Google"
+            >
+              <div className="text-center">
+                <p className="text-[0.7rem] tracking-[0.35em] text-accent">GOOGLE MAPS</p>
+                <p className="mt-3 text-sm text-ink-soft">اضغط لفتح الموقع على الخريطة</p>
               </div>
-            )}
+            </a>
           </div>
         </div>
 
